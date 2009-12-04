@@ -1,0 +1,49 @@
+Vim-Sessions
+============
+
+Description
+-----------
+
+Vim-Sessions is an automatic session generator, per project (aka directory)
+basis, for [Vim][] editor 
+
+Install
+-------
+
+Download the [gzipball][script homepage] from Vim [script homepage][] and
+open the package using [Vim][] and use the command `:source %`. Or run the
+following command:
+
+    vim sessions-<version>.vba.gz +":source %"
+
+Done! All files will be extracted in your [Vim][] home directory.
+If you checkout from repository, install using the following commands:
+
+    bash pool install
+
+This instruction will be create a Vimball file and install.
+
+Information
+-----------
+
+You maybe contributes to source. So, send a feedback in [issue tracker][].
+
+Vim-Sessions is hosted on following servers:
+
+* [Github](http://github.com/edsono/vim-sessions)
+* [Codaset](http://codaset.com/hallison/vim-sessions)
+
+Visit the [script homepage][] for more information.
+
+Copyright
+---------
+
+Copyright (c) 2009 Edson Cesar <edsono@gmail.com>
+
+[script homepage]: http://www.vim.org/scripts/script_search_results.php?keywords=vim-sessions
+  "Sessions Vim Script homepage"
+[vim]: http://www.vim.org
+  "Vim Editor"
+[issue tracker]: http://github.com/edsono/vim-sessions/issues
+  "Vim-Sessions Github Issues"
+
