@@ -1,1 +1,14 @@
-vim-sessions
+Vim-Sessions
+============
+
+Description
+-----------
+
+Vim-Sessions is an automatic session generator, per project (aka directory)
+basis, for [Vim][] editor 
+
+Copyright
+---------
+
+Copyright (c) 2009 Edson Cesar <edsono@gmail.com>
+
