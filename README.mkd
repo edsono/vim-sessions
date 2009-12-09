@@ -17,9 +17,14 @@ following command:
     vim sessions-<version>.vba.gz +":source %"
 
 Done! All files will be extracted in your [Vim][] home directory.
-If you checkout from repository, install using the following commands:
 
-    bash pool install
+If you checkout from repository, install using the following script:
+
+    bash do install
+
+Or
+
+    ./do install
 
 This instruction will be create a Vimball file and install.
 
