@@ -9,19 +9,9 @@ basis, for [Vim][] editor
 
 Install
 -------
+Use git and pathogen (http://github.com/tpope/vim-pathogen) plugin to manage your plugins in vim.
 
-Download the [gzipball][script homepage] from Vim [script homepage][] and
-open the package using [Vim][] and use the command `:source %`. Or run the
-following command:
-
-    vim sessions-<version>.vba.gz +":source %"
-
-Done! All files will be extracted in your [Vim][] home directory.
-If you checkout from repository, install using the following commands:
-
-    bash pool install
-
-This instruction will be create a Vimball file and install.
+More information here: http://tammersaleh.com/posts/the-modern-vim-config-with-pathogen
 
 Information
 -----------
@@ -31,7 +21,6 @@ You maybe contributes to source. So, send a feedback in [issue tracker][].
 Vim-Sessions is hosted on following servers:
 
 * [Github](http://github.com/edsono/vim-sessions)
-* [Codaset](http://codaset.com/hallison/vim-sessions)
 
 Visit the [script homepage][] for more information.
 
