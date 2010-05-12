@@ -31,6 +31,8 @@ function s:ProjectName()
     else
       continue
     endif
+  endfor
+  return []
 endfunction
 
 function s:SessionName()
