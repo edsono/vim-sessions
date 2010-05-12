@@ -5,7 +5,7 @@ Description
 -----------
 
 Vim-Sessions is an automatic session generator, per project (aka directory)
-basis, for [Vim][] editor 
+basis, for [Vim][] editor.
 
 Install
 -------
@@ -18,15 +18,17 @@ following command:
 
 Done! All files will be extracted in your [Vim][] home directory.
 
-If you checkout from repository, install using the following script:
+If you checkout from repository, install using the install task from
+[bake][bash-toolbox]:
 
-    bash do install
-
-Or
-
-    ./do install
+    bake install
 
 This instruction will be create a Vimball file and install.
+
+Use git and [Pathogen][] plugin to manage your plugins in vim.
+
+More information here:
+<http://tammersaleh.com/posts/the-modern-vim-config-with-pathogen>
 
 Information
 -----------
@@ -36,7 +38,6 @@ You maybe contributes to source. So, send a feedback in [issue tracker][].
 Vim-Sessions is hosted on following servers:
 
 * [Github](http://github.com/edsono/vim-sessions)
-* [Codaset](http://codaset.com/hallison/vim-sessions)
 
 Visit the [script homepage][] for more information.
 
@@ -45,10 +46,14 @@ Copyright
 
 Copyright (c) 2009 Edson Cesar <edsono@gmail.com>
 
-[script homepage]: http://www.vim.org/scripts/script_search_results.php?keywords=vim-sessions
+[script homepage]: http://www.vim.org/scripts/script.php?script_id=3091
   "Sessions Vim Script homepage"
 [vim]: http://www.vim.org
   "Vim Editor"
 [issue tracker]: http://github.com/edsono/vim-sessions/issues
   "Vim-Sessions Github Issues"
+[bash-toolbox]: http://github.com/codigorama/bash-toolbox
+  "Bash-Toolbox Task Manager"
+[pathogen]: http://www.vim.org/scripts/script.php?script_id=2332
+  "Vim-Pathogen"
 
