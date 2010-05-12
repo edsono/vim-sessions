@@ -12,7 +12,7 @@ task package {
   test -f ${pkg_file}.* && rm ${pkg_file}.*
 
   status "Creating package"
-  vim Manifest +":%MkVimball! ${pkg_file} ." +":q<cr>"
+  vim Manifest +":%MkVimball! ${pkg_file} ." +":q"
   gzip ${pkg_file}
 }
 
