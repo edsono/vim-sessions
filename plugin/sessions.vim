@@ -18,23 +18,35 @@ if !exists('g:sessions_path')
 endif
 
 if !isdirectory(expand(g:sessions_path))
+  " echomsg "Creating sessions path in " . expand(g:sessions_path) . ' ...'
   call mkdir(expand(g:sessions_path))
 endif
 
 function s:ProjectName()
-  return matchlist(getcwd(), expand(g:sessions_code_path) . '/\(\f\+\)$')
+  for path in split(expand(g:sessions_code_path), ':')
+    let matches = matchlist(getcwd(), path . '/\(\f\+\)$')
+    " echomsg "Recover project name " . path . " ..."
+    if ! empty(matches)
+      return matches
+    else
+      continue
+    endif
 endfunction
 
 function s:SessionName()
+  " echomsg "Recover session name ..."
   return expand(g:sessions_path) . '/' . <SID>ProjectName()[1]. '.vim'
 endfunction
 
 function s:IsProject()
+  " echomsg "Checking project ..."
   return <SID>ProjectName() != []
 endfunction
 
 function! LoadSession()
+  " echomsg "Loading session ..."
   if <SID>IsProject() && argc() == 0
+    " echomsg "Found session " . <SID>SessionName() . " ..."
     silent! execute 'source ' . <SID>SessionName()
   endif
 endfunction
@@ -44,6 +56,7 @@ function s:IsException()
 endfunction
 
 function! SaveSession()
+  " echomsg "Saving session ..."
   if <SID>IsProject() && !<SID>IsException()
     execute 'mksession! ' . <SID>SessionName()
   endif

@@ -1,6 +1,6 @@
 declare pkg_name=sessions
 declare pkg_base=$(dirname "$0")
-declare pkg_version=$(git tag | sort | tail -n 1)
+declare pkg_version=$(git tag | sort | tr -d v | tail -n 1)
 declare pkg_file="${pkg_name}-${pkg_version#v}.vba"
 
 source manifest.bk
