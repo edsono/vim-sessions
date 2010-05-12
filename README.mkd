@@ -9,6 +9,7 @@ basis, for [Vim][] editor.
 
 Install
 -------
+Use git and pathogen (http://github.com/tpope/vim-pathogen) plugin to manage your plugins in vim.
 
 Download the [gzipball][script homepage] from Vim [script homepage][] and
 open the package using [Vim][] and use the command `:source %`. Or run the
