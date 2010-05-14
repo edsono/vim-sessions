@@ -1,5 +1,5 @@
 " sessions.vim: Sessions in project dir are auto saved
-" Last modified: 27/11/2009
+" Last modified: 2010-05-13
 " Version:       0.1
 " Maintainer:    Edson César <edsono@gmail.com>
 " License:       This script is released under the Vim License.
@@ -24,7 +24,7 @@ endif
 
 function s:ProjectName()
   for path in split(expand(g:sessions_code_path), ':')
-    let matches = matchlist(getcwd(), path . '/\(\f\+\)$')
+    let matches = matchlist(getcwd(), path . '/\(\(\w\|\-\)\+\)')
     " echomsg "Recover project name " . path . " ..."
     if ! empty(matches)
       return matches
@@ -33,6 +33,10 @@ function s:ProjectName()
     endif
   endfor
   return []
+endfunction
+
+function s:CheckProjectPath()
+  " echomsg "Checking project path ..."
 endfunction
 
 function s:SessionName()
