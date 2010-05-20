@@ -7,80 +7,102 @@
 " License:       This script is released under the Vim License.
 
 if exists("g:sessions_loaded")
-    finish
+  finish
 endif
 let g:sessions_loaded = 1
 
-if !exists("g:sessions_code_path")
-  let g:sessions_code_path = expand("$HOME/code")
-else
-  let g:sessions_code_path = expand(g:sessions_code_path)
+function s:ProjectsPath()
+  "@echomsg "Getting projects path ..."
+  if !exists("g:sessions_project_path")
+    "@echomsg "Setting default sessions project path ..."
+    let g:sessions_project_path = "$HOME/code"
+  endif
+  return expand(g:sessions_project_path)
+endfunction
+
+function s:SessionsPath()
+  "@echomsg "Getting sessions path ..."
+  if !exists("g:sessions_path")
+    "@echomsg "Setting default sessions path ..."
+    let g:sessions_path = "$HOME/.vim/sessions"
+  endif
+  return expand(g:sessions_path)
+endfunction
+
+if !isdirectory(<SID>SessionsPath())
+  "@echomsg "Creating sessions path in " . <SID>SessionsPath() . " ..."
+  call mkdir(<SID>SessionsPath())
 endif
 
-if !exists("g:sessions_path")
-  let g:sessions_path = expand("$HOME/.vim/sessions")
-else
-  let g:sessions_path = expand(g:sessions_path)
-endif
-
-if !isdirectory(g:sessions_path)
-  echomsg "Creating sessions path in " . g:sessions_path . " ..."
-  call mkdir(g:sessions_path)
-endif
-
-let s:project_path = ""
-let s:project_name = ""
-let s:session_file = ""
-
-function s:InitProject()
-  for path in split(g:sessions_code_path, ':')
+function s:ProjectAttributes(index)
+  "@echomsg "Getting project attribute ..."
+  for path in split(<SID>ProjectsPath(), ':')
     let matches = matchlist(getcwd(), path . '/\(\(\w\|\-\)\+\)')
-    if ! empty(matches)
-      echomsg "Initializing project placed in " . path . " ..."
-      let s:project_path = matches[0]
-      let s:project_name = matches[1]
-      return 1
+    if !empty(matches)
+      return matches[a:index]
     else
       continue
     endif
   endfor
-  return 0
+  return ""
+endfunction
+
+function s:ProjectPath() 
+  "@echomsg "Getting project path ..."
+  return <SID>ProjectAttributes(0)
+endfunction
+
+function s:ProjectName()
+  "@echomsg "Getting project name ..."
+  return <SID>ProjectAttributes(1)
 endfunction
 
 function s:IsProject()
-  return !empty(s:project_name) && !empty(s:session_file)
+  "@echomsg "Checking project in current directory ..."
+  return !empty(<SID>ProjectName()) && !empty(<SID>ProjectPath())
 endfunction
 
-function s:InitSession()
-  if <SID>InitProject()
-    echomsg "Initializing session from " . g:sessions_path . " ..."
-    let s:session_file = g:sessions_path . "/" . s:project_name . ".vim"
-    return 1
+function s:ProjectSessionFile()
+  "@echomsg "Getting project session file ..."
+  if <SID>IsProject()
+    return <SID>SessionsPath() . "/" . <SID>ProjectName() . ".vim"
   endif
-  return 0
+  return ""
 endfunction
 
-function! LoadSession()
-  if <SID>InitSession() && argc() == 0
-    echomsg "Loading session " . s:session_file . " ..."
-    if argv(0) == s:project_path
-      echomsg "Changing to directory " . s:project_path . " ..."
-      cd s:project_path
-    endif
-    silent! execute "source " . s:session_file
-  endif
+function s:IsProjectPath()
+  return !empty(getftype(<SID>ProjectSessionFile()))
 endfunction
 
-function s:IsException()
-  return match(expand("%"), "\.git\/COMMIT") >= 0  " Git commit message
-endfunction
-
-function! SaveSession()
-  if <SID>IsProject() && !<SID>IsException()
-    "echo "Saving session " . s:session_file . " ..." | normal "<cr>"
-    silent! execute "mksession! " . s:session_file
+function s:LoadSession()
+  if <SID>IsProjectPath() && argc() == 0
+    "@echomsg "Loading session " . <SID>ProjectSessionFile() . " ..."
+    silent! execute "source " . <SID>ProjectSessionFile()
   endif
 endfunction
 
-autocmd VimEnter * call LoadSession()
-autocmd VimLeave,BufWritePost * call SaveSession()
+"@"echomsg "Initializing session from " . <SID>SessionsPath() . " ..."
+
+function s:IsNotException()
+  return !(match(expand("%"), "\.git\/COMMIT") >= 0) " Git commit message
+endfunction
+
+function s:SaveSession()
+  if <SID>IsProjectPath() && <SID>IsNotException()
+    "@echomsg "Saving session file " . <SID>ProjectSessionFile() . " ..."
+    silent! execute "mksession! " . <SID>ProjectSessionFile()
+  endif
+endfunction
+
+function! VimSession(option)
+  if a:option == "open"
+    call <SID>LoadSession()
+  elseif a:option == "save"
+    call <SID>SaveSession()
+  else
+    return
+  endif
+endfunction
+
+autocmd VimEnter              * call VimSession("open")
+autocmd VimLeave,BufWritePost * call VimSession("save")
