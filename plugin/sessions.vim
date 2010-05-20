@@ -11,7 +11,7 @@ if exists("g:sessions_loaded")
 endif
 let g:sessions_loaded = 1
 
-function s:ProjectsPath() VimSession
+function s:ProjectsPath()
   "@echomsg "Getting projects path ..."
   if !exists("g:sessions_project_path")
     "@echomsg "Setting default sessions project path ..."
@@ -84,7 +84,7 @@ endfunction
 "@"echomsg "Initializing session from " . <SID>SessionsPath() . " ..."
 
 function s:IsNotException()
-  return !match(expand("%"), "\.git\/COMMIT") >= 0  " Git commit message
+  return !(match(expand("%"), "\.git\/COMMIT") >= 0) " Git commit message
 endfunction
 
 function s:SaveSession()
