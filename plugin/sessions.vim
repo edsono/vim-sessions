@@ -1,5 +1,5 @@
 " sessions.vim: Sessions in project dir are auto saved
-" Last modified: 2010-05-14
+" Last modified: 2010-06-30
 " Version:       0.1
 " Author:        Edson César <edsono@gmail.com>
 " Maintainers:   Edson César <edsono@gmail.com>,
@@ -11,32 +11,26 @@ if exists("g:sessions_loaded")
 endif
 let g:sessions_loaded = 1
 
-function s:ProjectsPath()
-  "@echomsg "Getting projects path ..."
+function sessions#ProjectsPath()
   if !exists("g:sessions_project_path")
-    "@echomsg "Setting default sessions project path ..."
     let g:sessions_project_path = "$HOME/code"
   endif
   return expand(g:sessions_project_path)
 endfunction
 
-function s:SessionsPath()
-  "@echomsg "Getting sessions path ..."
+function sessions#SessionsPath()
   if !exists("g:sessions_path")
-    "@echomsg "Setting default sessions path ..."
     let g:sessions_path = "$HOME/.vim/sessions"
   endif
   return expand(g:sessions_path)
 endfunction
 
-if !isdirectory(<SID>SessionsPath())
-  "@echomsg "Creating sessions path in " . <SID>SessionsPath() . " ..."
-  call mkdir(<SID>SessionsPath())
+if !isdirectory(sessions#SessionsPath())
+  call mkdir(sessions#SessionsPath())
 endif
 
-function s:ProjectAttributes(index)
-  "@echomsg "Getting project attribute ..."
-  for path in split(<SID>ProjectsPath(), ':')
+function sessions#ProjectAttributes(index)
+  for path in split(sessions#ProjectsPath(), ':')
     let matches = matchlist(getcwd(), path . '/\(\(\w\|\-\)\+\)')
     if !empty(matches)
       return matches[a:index]
@@ -47,62 +41,45 @@ function s:ProjectAttributes(index)
   return ""
 endfunction
 
-function s:ProjectPath() 
-  "@echomsg "Getting project path ..."
-  return <SID>ProjectAttributes(0)
+function sessions#ProjectPath() 
+  return sessions#ProjectAttributes(0)
 endfunction
 
-function s:ProjectName()
-  "@echomsg "Getting project name ..."
-  return <SID>ProjectAttributes(1)
+function sessions#ProjectName()
+  return sessions#ProjectAttributes(1)
 endfunction
 
-function s:IsProject()
-  "@echomsg "Checking project in current directory ..."
-  return !empty(<SID>ProjectName()) && !empty(<SID>ProjectPath())
+function sessions#IsProject()
+  return !empty(sessions#ProjectName()) && !empty(sessions#ProjectPath())
 endfunction
 
-function s:ProjectSessionFile()
-  "@echomsg "Getting project session file ..."
-  if <SID>IsProject()
-    return <SID>SessionsPath() . "/" . <SID>ProjectName() . ".vim"
+function sessions#ProjectSessionFile()
+  if sessions#IsProject()
+    return sessions#SessionsPath() . "/" . sessions#ProjectName() . ".vim"
   endif
   return ""
 endfunction
 
-function s:IsProjectPath()
-  return !empty(<SID>ProjectPath())
+function sessions#IsProjectPath()
+  return !empty(sessions#ProjectPath())
 endfunction
 
-function s:LoadSession()
-  if <SID>IsProjectPath() && argc() == 0
-    "@echomsg "Loading session " . <SID>ProjectSessionFile() . " ..."
-    silent! execute "source " . <SID>ProjectSessionFile()
-  endif
-endfunction
-
-""@echomsg "Initializing session from " . <SID>SessionsPath() . " ..."
-
-function s:IsNotException()
+function sessions#IsNotException()
   return !(match(expand("%"), "\.git\/COMMIT") >= 0) " Git commit message
 endfunction
 
-function s:SaveSession()
-  if <SID>IsProjectPath() && <SID>IsNotException()
-    "@echomsg "Saving session file " . <SID>ProjectSessionFile() . " ..."
-    silent! execute "mksession! " . <SID>ProjectSessionFile()
+function! sessions#LoadSession()
+  if sessions#IsProjectPath() && argc() == 0
+    silent! execute "source " . sessions#ProjectSessionFile()
   endif
 endfunction
 
-function! VimSession(option)
-  if a:option == "open"
-    call <SID>LoadSession()
-  elseif a:option == "save"
-    call <SID>SaveSession()
+function! sessions#SaveSession()
+  if sessions#IsProjectPath() && sessions#IsNotException()
+    silent! execute "mksession! " . sessions#ProjectSessionFile()
   endif
-  "@echomsg "Saida de VimSession com" . option
 endfunction
 
-autocmd VimEnter              * :call VimSession("open")
-autocmd VimLeave,BufWritePost * :call VimSession("save")
+autocmd VimEnter              * :call sessions#LoadSession()
+autocmd VimLeave,BufWritePost * :call sessions#SaveSession()
 
