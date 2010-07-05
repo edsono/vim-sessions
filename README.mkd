@@ -25,10 +25,23 @@ If you checkout from repository, install using the install task from
 
 This instruction will be create a Vimball file and install.
 
-Use git and [Pathogen][] plugin to manage your plugins in vim.
+Or, use git and [Pathogen][] plugin to manage your plugins in vim.
 
 More information here:
 <http://tammersaleh.com/posts/the-modern-vim-config-with-pathogen>
+
+Usage
+-----
+
+After installing, specify your code directories (the folder where you save your projects)
+in your .vimrc:
+
+    let g:sessions_project_path = "$HOME/projects"
+
+Now, when editing a file in folder under this dir, vim-session will consider a project. So
+it will save sessions when saving and exiting vim.
+
+When you start vim again, in a dir under the same folder, this session will be reloaded.
 
 Information
 -----------
