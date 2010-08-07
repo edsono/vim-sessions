@@ -20,7 +20,11 @@ endfunction
 
 function sessions#SessionsPath()
   if !exists("g:sessions_path")
-    let g:sessions_path = "$HOME/.vim/sessions"
+    if has("unix")
+      let g:sessions_path = "$HOME/.vim/sessions"
+    else
+      let g:sessions_path = "$HOME/vimfiles/sessions"
+    endif
   endif
   return expand(g:sessions_path)
 endfunction
